@@ -35,6 +35,7 @@ type Trace struct {
 	Metadata  any        `json:"metadata,omitempty"`
 	Tags      []string   `json:"tags,omitempty"`
 	Public    bool       `json:"public,omitempty"`
+	ShouldTrace bool
 }
 
 type ObservationLevel string
@@ -65,6 +66,7 @@ type Generation struct {
 	Usage               Usage            `json:"usage,omitempty"`
 	PromptName          string           `json:"promptName,omitempty"`
 	PromptVersion       int              `json:"promptVersion,omitempty"`
+	Trace_							*Trace
 }
 
 type Usage struct {
@@ -98,6 +100,7 @@ type Score struct {
 	Value         float64 `json:"value,omitempty"`
 	ObservationID string  `json:"observationId,omitempty"`
 	Comment       string  `json:"comment,omitempty"`
+	Trace_							*Trace
 }
 
 type Span struct {
@@ -113,6 +116,7 @@ type Span struct {
 	Version             string           `json:"version,omitempty"`
 	ID                  string           `json:"id,omitempty"`
 	EndTime             *time.Time       `json:"endTime,omitempty"`
+	Trace_							*Trace
 }
 
 type Event struct {
@@ -127,6 +131,7 @@ type Event struct {
 	ParentObservationID string           `json:"parentObservationId,omitempty"`
 	Version             string           `json:"version,omitempty"`
 	ID                  string           `json:"id,omitempty"`
+	Trace_							*Trace
 }
 
 type M map[string]interface{}
