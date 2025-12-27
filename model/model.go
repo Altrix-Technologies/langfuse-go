@@ -135,3 +135,27 @@ type Event struct {
 }
 
 type M map[string]interface{}
+
+func (g *Generation) SetTrace(t *Trace) *Generation {
+	g.Trace_ = t
+	g.TraceID = t.ID
+	return g
+}
+
+func (s *Score) SetTrace(t *Trace) *Score {
+	s.Trace_ = t
+	s.TraceID = t.ID
+	return s
+}
+
+func (s *Span) SetTrace(t *Trace) *Span {
+	s.Trace_ = t
+	s.TraceID = t.ID
+	return s
+}
+
+func (e *Event) SetTrace(t *Trace) *Event {
+	e.Trace_ = t
+	e.TraceID = t.ID
+	return e
+}

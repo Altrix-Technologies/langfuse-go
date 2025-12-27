@@ -88,7 +88,7 @@ func (l *Langfuse) Trace(t *model.Trace) (*model.Trace, error) {
 }
 
 func (l *Langfuse) Generation(g *model.Generation, parentID *string) (*model.Generation, error) {
-	if g.TraceID == "" {
+	if g.Trace_ == nil {
 		t, err := l.createTrace(g.Name)
 		if err != nil {
 			return nil, err
@@ -104,7 +104,7 @@ func (l *Langfuse) Generation(g *model.Generation, parentID *string) (*model.Gen
 		g.ParentObservationID = *parentID
 	}
 
-	if (g.Trace_.ShouldTrace) {
+	if g.Trace_.ShouldTrace {
 		l.observer.Dispatch(
 			model.IngestionEvent{
 				ID:        utils.BuildID(nil),
@@ -122,11 +122,11 @@ func (l *Langfuse) GenerationEnd(g *model.Generation) (*model.Generation, error)
 		return nil, fmt.Errorf("generation ID is required")
 	}
 
-	if g.TraceID == "" {
-		return nil, fmt.Errorf("trace ID is required")
+	if g.Trace_ == nil {
+		return nil, fmt.Errorf("trace is required")
 	}
 
-	if (g.Trace_.ShouldTrace) {
+	if g.Trace_.ShouldTrace {
 		l.observer.Dispatch(
 			model.IngestionEvent{
 				ID:        utils.BuildID(nil),
@@ -141,12 +141,12 @@ func (l *Langfuse) GenerationEnd(g *model.Generation) (*model.Generation, error)
 }
 
 func (l *Langfuse) Score(s *model.Score) (*model.Score, error) {
-	if s.TraceID == "" {
-		return nil, fmt.Errorf("trace ID is required")
+	if s.Trace_ == nil {
+		return nil, fmt.Errorf("trace is required")
 	}
 	s.ID = utils.BuildID(&s.ID)
 
-	if (s.Trace_.ShouldTrace) {
+	if s.Trace_.ShouldTrace {
 		l.observer.Dispatch(
 			model.IngestionEvent{
 				ID:        utils.BuildID(nil),
@@ -160,7 +160,7 @@ func (l *Langfuse) Score(s *model.Score) (*model.Score, error) {
 }
 
 func (l *Langfuse) Span(s *model.Span, parentID *string) (*model.Span, error) {
-	if s.TraceID == "" {
+	if s.Trace_ == nil {
 		t, err := l.createTrace(s.Name)
 		if err != nil {
 			return nil, err
@@ -176,7 +176,7 @@ func (l *Langfuse) Span(s *model.Span, parentID *string) (*model.Span, error) {
 		s.ParentObservationID = *parentID
 	}
 
-	if (s.Trace_.ShouldTrace) {
+	if s.Trace_.ShouldTrace {
 		l.observer.Dispatch(
 			model.IngestionEvent{
 				ID:        utils.BuildID(nil),
@@ -192,14 +192,14 @@ func (l *Langfuse) Span(s *model.Span, parentID *string) (*model.Span, error) {
 
 func (l *Langfuse) SpanEnd(s *model.Span) (*model.Span, error) {
 	if s.ID == "" {
-		return nil, fmt.Errorf("generation ID is required")
+		return nil, fmt.Errorf("span ID is required")
 	}
 
-	if s.TraceID == "" {
-		return nil, fmt.Errorf("trace ID is required")
+	if s.Trace_ == nil {
+		return nil, fmt.Errorf("trace is required")
 	}
 
-	if (s.Trace_.ShouldTrace) {
+	if s.Trace_.ShouldTrace {
 		l.observer.Dispatch(
 			model.IngestionEvent{
 				ID:        utils.BuildID(nil),
@@ -214,7 +214,7 @@ func (l *Langfuse) SpanEnd(s *model.Span) (*model.Span, error) {
 }
 
 func (l *Langfuse) Event(e *model.Event, parentID *string) (*model.Event, error) {
-	if e.TraceID == "" {
+	if e.Trace_ == nil {
 		t, err := l.createTrace(e.Name)
 		if err != nil {
 			return nil, err
@@ -230,7 +230,7 @@ func (l *Langfuse) Event(e *model.Event, parentID *string) (*model.Event, error)
 		e.ParentObservationID = *parentID
 	}
 
-	if (e.Trace_.ShouldTrace) {
+	if e.Trace_.ShouldTrace {
 		l.observer.Dispatch(
 			model.IngestionEvent{
 				ID:        uuid.New().String(),
